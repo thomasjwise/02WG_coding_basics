@@ -19,23 +19,23 @@ data <- read.csv(file = "data/data_wales_education.csv")
 # Exercise 2: View the current dataset (data) 
   # For this, we can use the GUI, or functions such as View(), head() or tail() 
 
-View(data)
-head(data) 
-tail(data)
+View(??)
+head(??) 
+tail(??)
 
 # Exercise 3: Examine the dataframe in more detail, determining what is in each column 
   # Exercise 3a: Use the str() function, to examine its structure 
 
-str(data)
+str(??)
 
   # Exercise 3b: Use ncol() and nrow(), to examine the number of rows/columns 
 
-ncol(data)
-nrow(data)
+ncol(??)
+nrow(??)
 
   # Exercise 3c: Get a summary of the entire dataframe using summary() 
 
-summary(data)
+summary(??)
 
     # From this we can see that all variables (with the exception of data values)
     # Are character classes, which is not useful when trying to understand the data. 
@@ -46,35 +46,34 @@ summary(data)
   # Hint you can use the rename() function 
 
 # In this case we can see that the data.description column describes the data.values column. 
-data <- rename(data, Number.of.activities = Data.values)
+data <- rename(??, ?? = Data.values)
 
   # Exercise 4b: Remove the extra column called 'Data.description' 
   # Hint: You can simply set this column to NULL
   # Note: There are multiple methods to achieve this! 
 
-data$Data.description <- NULL
+
 
 # Exercise 5: Transforming between variable Types
   # Exercise 5a: Using the sapply function 'sapply()', isolate the columns with the type character. 
     # Before assigning it to a variable.
   # Hint: You can use the is.character parameter for this. 
-chr_cols <- sapply(data, is.character)
+?? <- sapply(data, ??)
 
   # Exercise 5b: Using the lapply function 'lapply()', set all character columns to factors
     # Making sure to reassign them to the columns correctly. 
   # Hint: You can use the as.factor parameter for this conversion.
-data[chr_cols] <- lapply(data[chr_cols], as.factor)
+data[??] <- lapply(data[??], ??)
 
   # Exercise 5c: Using summary(), evaluation the dataset in question again. 
 summary(data)
 
 # Exercise 6: Breakdown & Subseting Data 
   # Exercise 6a: Using levels(), examine the number of levels in Academic.year
-levels(data$Academic.year)
 
   # Exercise 6b: Next we can use the split() function to split this dataframe
     # Through splitting it we create a large list of dataframes
-data_list_year <- split(data, data$Academic.year)
+data_list_year <- split(??, ??)
 
   # Exercise 6c: Next, examine this list using summary()
 summary(data_list_year)
@@ -87,16 +86,13 @@ list2env(data_list_year, envir = .GlobalEnv)
   # Exercise 7a: Lets choose a year, say `2016-17` and subset by Mode
   # We can use the subset() function to look at only the "Apprenticeship" group. 
 
-data_201617_apprenticeships <- subset(`2016-17`, Mode.of.programme == "Apprenticeships")
+data_201617_apprenticeships <- subset(??, ?? == ??)
 
   # Exercise 7b: However we can also subset by multiple groups.
   # In this instance, split the same dataset (`2016-17`), by all those under 20 
 
-data_201617_under20 <- subset(`2016-17`,
-                              Age.group == "16" |
-                              Age.group == "17" |
-                              Age.group == "18" |
-                              Age.group == "19" )
+data_201617_under20 <- subset(??, 
+                              ?? | ??)
 
 # Exercise 8: Clean up! 
   # It is always important to clean up your data accordingly. 
@@ -109,5 +105,5 @@ data_201617_under20 <- droplevels(data_201617_under20)
   # This allows us to rejoin dataframes. 
   # In this case, rejoin the years 2016-17, 2017-18 and 2018-19
 
-data_2016to19 <- bind_rows(`2016-17`, `2017-18`, `2018-19`)
+data_2016to19 <- bind_rows(?? , ?? , ??)
 
