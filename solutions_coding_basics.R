@@ -49,10 +49,9 @@ summary(data)
 data <- rename(data, Number.of.activities = Data.values)
 
   # Exercise 4b: Remove the extra column called 'Data.description' 
-  # Hint: You can simply set this column to NULL
   # Note: There are multiple methods to achieve this! 
 
-data$Data.description <- NULL
+data <- select(data, !Data.description)
 
 # Exercise 5: Transforming between variable Types
   # Exercise 5a: Using the sapply function 'sapply()', isolate the columns with the type character. 
@@ -67,6 +66,8 @@ data[chr_cols] <- lapply(data[chr_cols], as.factor)
 
   # Exercise 5c: Using summary(), evaluation the dataset in question again. 
 summary(data)
+
+# Section 3: Subsetting & Joining 
 
 # Exercise 6: Breakdown & Subseting Data 
   # Exercise 6a: Using levels(), examine the number of levels in Academic.year
