@@ -1,0 +1,348 @@
+---
+title: "Coding Basics"
+author: "Thomas Wise"
+format: 
+  revealjs:
+    smaller: true
+    theme: dark
+editor: visual
+---
+
+## Session Objectives
+
+-   Understand the different types of datasets available
+-   Understand how to load in datasets and view them
+-   Understand how to preform basic data cleaning including
+    -   Column Name Changes
+    -   Column Removal
+    -   Dataset Subsetting, Filtering and joining
+    -   Dataset variable transformation
+-   Begin to understand the *apply* family of functions
+-   Begin to understand typical code structuring
+
+## Today's Plan
+
+-   Section 1: Components of a script
+-   Section 2: Accessing Data in R & Data Structures
+-   Worksheet Part 1: Loading in and Viewing Data
+-   Section 3: Data Cleaning (Basics)
+-   Worksheet Part 2: Column Renaming and Transforming
+-   Break
+-   Section 4: Data Manipulation through Subsetting & Joins
+-   Worksheet Part 3: Subsetting & Joining
+
+## Homework Exercise
+
+-   Found under `homework_task.R`
+-   Builds on the content from today's session and provides opportunity for extension.
+
+# Section 1: Components of Basic R Scripts 
+
+## Basic Programming Techniques 
+
+Throughout this series we will refer to:
+
+-   [Tidyverse Style Guide](https://style.tidyverse.org/index.html)
+-   [GSS Style Guide](https://best-practice-and-impact.github.io/qa-of-code-guidance/intro.html)
+-   There is also a Welsh Government Coding Style guide you can review
+
+But some basic terminology:
+
+-   `<-` assignment arrow, or to assign
+-   `?` prefix a function to open the help page
+-   Variables are stored pieces of data in your global environment stored through assignment arrows
+-   Arguments are those specified in functions and as specified through the `=`
+
+## Structure of an R Call 
+
+Basic Call: 
+
+- `[ASSIGNMENT] <- FUNCTION(PARAMETER = X)`
+
+- `data <- read.csv(data = "data/data_wales_education.csv")`
+
+More complex calls add layers of parameters, but typically will stick to this structure. 
+
+To know what a Functions parameters are, you can use the helper function `?` to prefix the function 
+
+- For example: `?read.csv()`
+
+# Section 2: Accessing Data in R & Data Structures
+
+## ## Data Loading: Working Directory
+
+-   The location where R will look to find and save files managed in RStudio
+-   Use `getwd()` to pull your current working directory.
+-   Use `setwd()` to set your working directory
+-   You can also access, change and view your working directory via the GUI
+    -   *Files Panel (Bottom Right)* \>\> More \>\>
+    -   Set as Working Directory
+    -   Go to Working Directory
+
+## Data Loading: Manual Loading
+
+-   Data can be loaded into your RStudio Environment in multiple ways
+-   The easiest method is finding the data file (.csv, .json, .tsv etc) in your *files* panel
+-   When selected it you can select to *import dataset* which handles a majority of the process
+
+## Data Loading: Code Loading
+
+-   You can also use script or code to load in your data.
+    -   `load()` - .RData files
+    -   `readRDS()` - .RDS files
+    -   `read_csv()` - .csv files - **readr**
+    -   `read_tsv()` - .tsv files - **readr**
+    -   `read_delim()` - delim files (.txt, any other variant) - **readr**
+    -   `read_spss()`/`read_sav()` - SPSS files (.spss/.sav) - **haven**
+    -   `read_sas()`/`read_xpt()` - SAS files (.sas7bdat) - **haven**
+    -   `read_dta()` - Stata files (.dta) - **haven**
+    -   `read_excel()`/`read_xls()`/`read_xlsx()` - Xlsx files - **readxl**
+-   This list isn't exhaustive!! If in doubt, Google it!!
+
+## Variable Types
+
+-   *logical* (or boolean): TRUE / FALSE
+-   *numeric*: 1, 2, 3, 4 (you may also see *double*)
+-   *integer*: 1L, 2L, 3L
+-   *complex*: 1 + 2i, 2 + 3i
+-   *character*: 'one', 'two', 'three'
+-   *factors*: Nomial Variables
+-   *raw*: 6f 6e 65
+
+## Variable Conversion (between types)
+
+-   Conversion functions:
+    -   To logical: `as.logical()`
+    -   To Numeric: `as.numeric()`
+    -   To Integer: `as.integer()`
+    -   To Character: `as.character()`
+    -   To raw: `charToRaw()`
+    -   To factor: `as.factor()` / `factor()`
+-   Dates are an oddly complex form of variable. Which we won't cover during this course.
+
+## Data Structures
+
+-   Vector: String of multiple elements
+-   Matrix: Multiple vectors formed into columns and rows (which share the same data type)
+-   Arrays: Similar to matrices but more than 2 dimensions
+-   Data Frames: Multiple vectors formed into columns and rows, each columns indicates a different variables
+-   Tibbles: Simple Dataframes
+-   Lists: An ordered collection of objects, merged of one or multiple types
+
+## Data Structures: Vectors
+
+Vectors are (generally) created using the `c()` function. To be fully functional, must have elements of all the same type
+
+For example: `vec <- c(1, 3, 5, 9)`
+
+You can access elements in a vector using suffixing the variable with `[]`
+
+For example: `vec[1]` will access the first element, 1
+
+NOTE: R indexing begins at 1 (not 0)
+
+## Data Structures: Matrices
+
+Matrices can be created using the `as.matrix()` or `matrix()` functions
+
+For example: `mat <- matrix(1:16, nrow = 4, ncol = 4)`
+
+You can also use `cbind()` or `rbind()` to join together multiple vectors (by column or row) to form matrices
+
+To access elements you can use `[]`
+
+For example: `mat[i,j]`, where i indicates the row, and j the column.
+
+## Data Structures: Data Frames
+
+Dataframes can be created using the `as.data.frame()` or `data.frame()` functions
+
+- For example: `df <- as.data.frame(mat)`
+
+You can easily apply functions such as `str()` or `typeof()` to view the composition of the structure
+
+Similarly you can use the function `view()` to view the entire structure
+
+To access the elements of a dataframe you can use `[]`
+
+- For example: `df[i,j]`, where i indicates the row, and j the column
+
+## Data Structures: Lists
+
+Lists are data structure which combine multiple other structures together in one area.
+
+For example, a list could be a mixture of other lists, dataframes, tibbles, vectors etc
+
+You can easily view the structure of a list in the GUI!
+
+To access elements of a list you can use `[]`
+
+## Interacting with Data Structures
+
+Although you can use the GUI to easily view data structures, you can preview data using: 
+
+- `View()` - Opens a new pane panel to display the data 
+- `head()` - Prints the first 5 rows of the dataset into the console 
+- `tail()` - Prints the last 5 rows of the dataset into the console 
+
+Additionally, you can examine the structure of the dataset: 
+
+- `str()` - highlights the overall structure of the dataset 
+- `ncol()` - prints the number of columns in the dataset 
+- `nrow()` - prints the number of rows in the dataset
+
+You can also examine an overall summary of the dataset: 
+
+- `summary()` - prints a summary of the dataset given
+
+# Worksheet Section 1
+
+# Section 3: Data Cleaning
+"Data Scientists spend approximately 60% of their time cleaning and organising data" (Forbes. 2016)
+
+## Basic Selection Syntax - The Tidyverse
+
+The Tidyverse, sets out some simple syntax operations
+
+- `:` for selecting a range of consecutive variables.
+
+- `!` for taking the complement of a set of variables.
+
+- `&` and `|` for selecting the intersection or the union of two sets of variables.
+
+- `c()` for combining selections.
+
+## Advanced Selection Syntax - The Tidyverse 
+
+The Tidyverse, also sets out some more advanced syntax for selection of: 
+
+Columns: 
+
+- `everything()`: Matches all variables.
+
+- `last_col()`: Select last variable, possibly with an offset.
+
+- `group_cols()`: Select all grouping columns.
+
+Those columns which are characters 
+
+- `all_of()`: Matches variable names in a character vector. All names must be present, otherwise an out-of-bounds error is thrown.
+
+- `any_of()`: Same as all_of(), except that no error is thrown for names that don't exist.
+
+## Advanced Selection Syntax - The Tidyverse 
+
+Those with specific names or patterns:
+
+- `starts_with()`: Starts with a prefix.
+
+- `ends_with()`: Ends with a suffix.
+
+- `contains()`: Contains a literal string.
+
+- `matches()`: Matches a regular expression.
+
+- `num_range()`: Matches a numerical range like x01, x02, x03.
+
+Or using a predicate function:
+
+- `where()`: Applies a function to all variables and selects those for which the function returns TRUE.
+
+## Dataframe, Column Names & Observation Changes
+
+Column Name re-naming and structuring:
+
+Assign a string (or vector of strings) to the function `colnames()` or `rename()` to rename your columns:
+
+- `colnames(df) <- c("a", "b", "c")`
+
+- `data <- rename(data, NEW_NAME = OLD_NAME)`
+
+Change a specific observation 
+
+- `df[row,col] <- "NEW_VAL"`
+
+## Selecting Columns 
+
+The `select()` function, allows the precise selection, removal or change of variables 
+
+For example: 
+
+Dropping specific columns 
+
+- In this case, selecting all but (!) one columns 
+- `data <- select(data, !COL)` 
+
+Selecting a specific range of columns 
+
+- In this case, selecting all columns (inclusive) from Col A to Col B
+- `data <- select(data, COL_A:COL_B)`
+
+## `apply()` family of functions 
+
+`apply()` is a family of functions which allows functions to be applied to the rows or columns of a data frame / matrix 
+
+This includes: 
+
+| Function  | Use on | Parameters |
+|-----------|--------|------------|
+| `apply()` | matrix or dataframe | x, margin, function |
+| `lapply()` | list | x, function |
+| `sapply()` | list, vector or dataframe | x, function |
+| `tapply()` | dataframe | x, index, function |
+| `mapply()` | multiple lists or vectors | listX, listY, function | 
+
+# Worksheet Section 2
+
+# Break
+
+# Section 4: Subsetting and Joining  
+
+## The Funky Functions! 
+
+- `levels()` - you can examine how factor variables are broken down in your data
+- `droplevels()` - you can remove levels automatically which have zero cases
+- `split()` - you can split apart your data, grouped by a specific value to form a list of datasets 
+- `list2env(envir = .GlobalEnv)` - you can break apart a list into its individual datasets
+
+- `bind_rows()` & `bind_col()` - you can join together dataframes by rows or cols respectively 
+
+## Subsetting datasets
+
+The `subset()` function, allows you to subset dataframes based on specific conditions
+
+For Example: 
+
+- Base Function 
+- `subset(x, subset)` 
+
+- Worked example
+- In this case, it subsets the data based on the condition (COND) for Variable 1 (VAR1)
+- `new_data <- subset(data, subset = VAR1 == COND)` 
+
+- In this case, it subset the data based on multiple variables (VAR1, VAR2) and multiple conditions using the or (|) conditional
+- `new_data <- subset(data, subset = VAR1 == COND1 | VAR2 == COND2)`
+
+# Worksheet Section 3: Subsetting and Joining 
+
+# Session Round Up
+
+## Session Objectives 
+
+-   Understand the different types of datasets available
+-   Understand how to load in datasets and view them
+-   Understand how to preform basic data cleaning including
+    -   Column Name Changes
+    -   Column Removal
+    -   Dataset Subsetting, Filtering and joining
+    -   Dataset variable transformation
+-   Begin to understand the *apply* family of functions
+-   Begin to understand typical code structuring
+
+## Next Session 
+
+- Topic: Errors, Debugging & Editing Code
+- May 6th 11:30-13:00
+
+
+
